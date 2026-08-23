@@ -7,6 +7,7 @@ import { evaluateScaleGates, ALLOWED_CLAIM_LABELS } from "../src/gates.mjs";
 import { replayRoot } from "../src/replay.mjs";
 
 const profile = JSON.parse(await readFile(new URL("../config/lab-profile.json", import.meta.url), "utf8"));
+const platformAttestations = JSON.parse(await readFile(new URL("../config/build-platform-attestations.json", import.meta.url), "utf8"));
 
 test("Device to Planet topology is deterministic and separately measured", () => {
   const first = simulateBaseline(profile);
@@ -63,4 +64,12 @@ test("two genuinely independent matching build attestations satisfy only S5 repr
     ]
   });
   assert.equal(gates[5].status, "PASS_REPRODUCED");
+});
+
+test("committed platform attestations disclose the common operator and imply no protocol authority", () => {
+  assert.equal(platformAttestations.independent_build_platform_count, 2);
+  assert.equal(platformAttestations.common_project_operator_disclosed, true);
+  assert.equal(platformAttestations.protocol_authority_implied, false);
+  assert.ok(platformAttestations.attestations.every((entry) => entry.independence_scope === "BUILD_EXECUTOR_INFRASTRUCTURE_ONLY"));
+  assert.ok(platformAttestations.attestations.every((entry) => entry.independent_protocol_authority === false));
 });

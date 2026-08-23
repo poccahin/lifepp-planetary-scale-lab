@@ -11,6 +11,9 @@ console.log(JSON.stringify({
   artifact_roots_equal: true,
   certificate_root: left.certificate_root,
   build_variants_reproduced: 2,
-  independent_provider_control_domains: 1,
-  satisfies_s5_independent_reproduction: false
+  independent_build_platforms: left.independent_build_platforms,
+  independence_scope: "BUILD_EXECUTOR_INFRASTRUCTURE_ONLY",
+  common_project_operator_disclosed: true,
+  protocol_authority_implied: false,
+  satisfies_s5_independent_reproduction: left.s5_independent_reproduction_complete === true
 }));

@@ -15,7 +15,7 @@ const payload = {
   artifact_version: "1.0.0",
   claim_label: "[EXP]",
   evidence_class: "INDEPENDENT_BUILD_PLATFORM_REPRODUCTION",
-  build_platform: "CLOUDFLARE_PAGES_BUILD",
+  build_platform: "CLOUDFLARE_GIT_BUILD",
   build_executor_control_domain: "cloudflare.com",
   common_project_operator_disclosed: true,
   common_project_operator: "poccahin-current-operator",
