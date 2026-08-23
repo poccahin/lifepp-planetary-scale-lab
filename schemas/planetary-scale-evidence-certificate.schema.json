@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ahin.io/schemas/planetary-scale-evidence-certificate-v1.schema.json",
+  "title": "[SIM] Planetary Scale Evidence Certificate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_type", "artifact_version", "claim_label", "evidence_class",
+    "certificate_status", "frozen_protocol_heads", "run_root", "profile_root",
+    "topology_root", "candidate_root", "incremental_root", "full_replay_root",
+    "candidate_incremental_full_replay_equal", "gates", "s0_through_s4_complete",
+    "s5_independent_reproduction_complete", "independent_build_platforms",
+    "required_independent_build_platforms", "simulated_topology_only",
+    "planetary_scale_envelope_proved", "planetary_live_scale_proved",
+    "protocol_finality_proved", "autonomous_protocol_merge", "transaction_submission",
+    "asset_execution_enabled", "asset_recovery_executor", "certificate_root"
+  ],
+  "properties": {
+    "artifact_type": {"const": "PlanetaryScaleEvidenceCertificate"},
+    "artifact_version": {"const": "1.0.0"},
+    "claim_label": {"enum": ["[M]", "[D]", "[C]", "[A]", "[SIM]", "[EXP]", "[RET]"]},
+    "evidence_class": {"enum": ["SIMULATED", "EMULATED", "LIVE_VERIFIED"]},
+    "certificate_status": {"enum": ["PARTIAL_SIMULATED_FAIL_CLOSED", "SCALE_ENVELOPE_REPRODUCED"]},
+    "frozen_protocol_heads": {"type": "object"},
+    "run_root": {"$ref": "#/$defs/hash"},
+    "profile_root": {"$ref": "#/$defs/hash"},
+    "topology_root": {"$ref": "#/$defs/hash"},
+    "candidate_root": {"$ref": "#/$defs/hash"},
+    "incremental_root": {"$ref": "#/$defs/hash"},
+    "full_replay_root": {"$ref": "#/$defs/hash"},
+    "candidate_incremental_full_replay_equal": {"type": "boolean"},
+    "gates": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "required": ["gate", "claim_label", "status", "evidence"],
+        "properties": {
+          "gate": {"enum": ["S0", "S1", "S2", "S3", "S4", "S5"]},
+          "claim_label": {"enum": ["[M]", "[D]", "[C]", "[A]", "[SIM]", "[EXP]", "[RET]"]},
+          "status": {"type": "string"},
+          "evidence": {"type": "object"}
+        }
+      }
+    },
+    "s0_through_s4_complete": {"type": "boolean"},
+    "s5_independent_reproduction_complete": {"type": "boolean"},
+    "independent_build_platforms": {"type": "integer", "minimum": 0},
+    "required_independent_build_platforms": {"type": "integer", "minimum": 2},
+    "simulated_topology_only": {"type": "boolean"},
+    "planetary_scale_envelope_proved": {"type": "boolean"},
+    "planetary_live_scale_proved": {"const": false},
+    "protocol_finality_proved": {"const": false},
+    "autonomous_protocol_merge": {"const": false},
+    "transaction_submission": {"const": false},
+    "asset_execution_enabled": {"const": false},
+    "asset_recovery_executor": {"const": "DISARMED"},
+    "certificate_root": {"$ref": "#/$defs/hash"}
+  },
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^sha256:[a-f0-9]{64}$"}
+  }
+}

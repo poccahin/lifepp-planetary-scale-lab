@@ -1,0 +1,51 @@
+name: scale-lab-determinism
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reproduce:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            platform: github-ubuntu-x64
+          - runner: macos-14
+            platform: github-macos-arm64
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm run verify
+      - uses: actions/upload-artifact@v4
+        with:
+          name: scale-evidence-${{ matrix.platform }}
+          path: reports
+          if-no-files-found: error
+          retention-days: 30
+
+  compare:
+    needs: reproduce
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/download-artifact@v4
+        with:
+          name: scale-evidence-github-ubuntu-x64
+          path: artifacts/ubuntu
+      - uses: actions/download-artifact@v4
+        with:
+          name: scale-evidence-github-macos-arm64
+          path: artifacts/macos
+      - run: node scripts/compare-build-platforms.mjs artifacts/ubuntu/planetary-scale-evidence-certificate.json artifacts/macos/planetary-scale-evidence-certificate.json

@@ -1,0 +1,9 @@
+{
+  "artifact_type": "ScaleLabBuildPlatformAttestationSet",
+  "artifact_version": "1.0.0",
+  "claim_label": "[EXP]",
+  "attestations": [],
+  "independent_build_platform_count": 0,
+  "required_independent_build_platform_count": 2,
+  "s5_reproduction_gate_satisfied": false
+}

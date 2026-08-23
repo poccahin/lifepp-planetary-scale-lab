@@ -1,0 +1,37 @@
+{
+  "artifact_type": "PlanetaryScaleLabProfile",
+  "artifact_version": "1.0.0",
+  "claim_label": "[SIM]",
+  "evidence_class": "SIMULATED",
+  "seed": "lifepp-planetary-scale-lab-v1",
+  "epochs": 12,
+  "epoch_duration_seconds": 1,
+  "devices_per_cell": 128,
+  "cells_per_field": 16,
+  "fields_per_region": 8,
+  "active_concurrency": 4096,
+  "regions": [
+    {"id":"region-0","provider":"provider-a","architecture":"x86_64"},
+    {"id":"region-1","provider":"provider-b","architecture":"arm64"},
+    {"id":"region-2","provider":"provider-c","architecture":"x86_64"},
+    {"id":"region-3","provider":"provider-a","architecture":"arm64"},
+    {"id":"region-4","provider":"provider-b","architecture":"x86_64"},
+    {"id":"region-5","provider":"provider-c","architecture":"arm64"}
+  ],
+  "thresholds": {
+    "logical_identity_capacity": 98304,
+    "active_concurrency": 4096,
+    "sustained_throughput_events_per_second": 768,
+    "cross_cell_commitments_per_second": 48,
+    "global_roots_per_second": 1,
+    "minimum_regions": 6,
+    "minimum_providers": 3,
+    "minimum_architectures": 2,
+    "independent_build_platforms": 2
+  },
+  "protocol_finality_proved": false,
+  "planetary_live_scale_proved": false,
+  "transaction_submission": false,
+  "asset_execution_enabled": false,
+  "asset_recovery_executor": "DISARMED"
+}
