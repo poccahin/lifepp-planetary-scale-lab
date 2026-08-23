@@ -4,6 +4,7 @@ import { domainHash } from "../src/canonical.mjs";
 const run = JSON.parse(await readFile("reports/scale-lab-run.json", "utf8"));
 const certificate = JSON.parse(await readFile("reports/planetary-scale-evidence-certificate.json", "utf8"));
 const platforms = JSON.parse(await readFile("config/build-platform-attestations.json", "utf8"));
+const reproduction = JSON.parse(await readFile("reports/platform-reproduction-verification.json", "utf8"));
 const { run_root: recordedRunRoot, ...runPayload } = run;
 const { certificate_root: recordedCertificateRoot, ...certificatePayload } = certificate;
 if (domainHash("lifepp:planetary-scale-lab:run:v1", runPayload) !== recordedRunRoot) throw new Error("RUN_ROOT_MISMATCH");
@@ -14,4 +15,8 @@ if (certificate.planetary_scale_envelope_proved !== certificate.s5_independent_r
 if (certificate.planetary_live_scale_proved !== false) throw new Error("LIVE_SCALE_OVERCLAIM");
 if (certificate.protocol_finality_proved !== false || certificate.transaction_submission !== false || certificate.asset_execution_enabled !== false) throw new Error("AUTHORITY_BOUNDARY_VIOLATION");
 if (certificate.asset_recovery_executor !== "DISARMED") throw new Error("RECOVERY_EXECUTOR_MUST_REMAIN_DISARMED");
+const { verification_root: recordedVerificationRoot, ...reproductionPayload } = reproduction;
+if (domainHash("lifepp:build-platform-reproduction-verification:v1", reproductionPayload) !== recordedVerificationRoot) throw new Error("PLATFORM_REPRODUCTION_ROOT_MISMATCH");
+if (reproduction.certificate_root !== recordedCertificateRoot || reproduction.s5_independent_reproduction_complete !== true) throw new Error("PLATFORM_REPRODUCTION_CERTIFICATE_DIVERGENCE");
+if (reproduction.independent_protocol_authority !== false || reproduction.planetary_live_scale_proved !== false) throw new Error("PLATFORM_REPRODUCTION_OVERCLAIM");
 console.log(JSON.stringify({ evidence_verified: true, run_root: recordedRunRoot, certificate_root: recordedCertificateRoot }));
