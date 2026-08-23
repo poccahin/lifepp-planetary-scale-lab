@@ -8,7 +8,9 @@ function gate(id, claimLabel, status, evidence) {
 export function evaluateScaleGates({ profile, first, second, faults, buildPlatformAttestations = [] }) {
   const thresholds = profile.thresholds;
   const independentPlatforms = new Set(buildPlatformAttestations
-    .filter((entry) => entry.administratively_independent === true && entry.artifact_root === first.candidateRoot)
+    .filter((entry) => entry.executor_infrastructure_independent === true
+      && entry.independence_scope === "BUILD_EXECUTOR_INFRASTRUCTURE_ONLY"
+      && entry.artifact_root === first.candidateRoot)
     .map((entry) => entry.platform_control_domain));
   const topologyPass = first.topology.topology_root === second.topology.topology_root
     && first.profileRoot === second.profileRoot;
