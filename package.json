@@ -7,7 +7,8 @@
   "scripts": {
     "test": "node --test test/*.test.mjs",
     "lab": "node scripts/run-scale-lab.mjs",
-    "verify": "npm test && npm run lab && node scripts/verify-evidence.mjs"
+    "verify": "npm test && npm run lab && node scripts/verify-evidence.mjs",
+    "cloudflare:build": "npm run verify && node scripts/build-cloudflare-reproduction.mjs"
   },
   "engines": {
     "node": ">=22"
