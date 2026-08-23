@@ -28,6 +28,8 @@
 
 `[A]` S5 remains fail-closed until two administratively independent build platforms reproduce the same artifact root. GitHub runner variants under one provider do not satisfy that condition.
 
+`[EXP]` The Cloudflare Git build runs `npm run cloudflare:build` and publishes only the generated `dist` evidence through an unbound `workers.dev` resource. It has no secret, storage, queue, database, custom-domain, or `ahin.io` route binding and carries no protocol authority.
+
 ```text
 PLANETARY_LIVE_SCALE_PROVED=false
 PLANETARY_SCALE_ENVELOPE_PROVED=false
