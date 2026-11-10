@@ -49,7 +49,7 @@ test("S0-S4 pass only as deterministic or simulated evidence while S5 fails clos
   assert.ok(gates.every((entry) => ALLOWED_CLAIM_LABELS.includes(entry.claim_label)));
 });
 
-test("two genuinely independent matching build attestations satisfy only S5 reproduction", () => {
+test("two distinct build-executor infrastructures satisfy only S5 reproduction", () => {
   const first = simulateBaseline(profile);
   const second = simulateBaseline(profile);
   const faults = runFaultCampaigns(first.events, first.initialRoot, first.candidateRoot);
@@ -59,8 +59,8 @@ test("two genuinely independent matching build attestations satisfy only S5 repr
     second,
     faults,
     buildPlatformAttestations: [
-      { artifact_root: first.candidateRoot, administratively_independent: true, platform_control_domain: "platform-a" },
-      { artifact_root: first.candidateRoot, administratively_independent: true, platform_control_domain: "platform-b" }
+      { artifact_root: first.candidateRoot, executor_infrastructure_independent: true, independence_scope: "BUILD_EXECUTOR_INFRASTRUCTURE_ONLY", platform_control_domain: "platform-a" },
+      { artifact_root: first.candidateRoot, executor_infrastructure_independent: true, independence_scope: "BUILD_EXECUTOR_INFRASTRUCTURE_ONLY", platform_control_domain: "platform-b" }
     ]
   });
   assert.equal(gates[5].status, "PASS_REPRODUCED");
@@ -70,6 +70,26 @@ test("committed platform attestations disclose the common operator and imply no 
   assert.equal(platformAttestations.independent_build_platform_count, 2);
   assert.equal(platformAttestations.common_project_operator_disclosed, true);
   assert.equal(platformAttestations.protocol_authority_implied, false);
+  assert.equal(platformAttestations.administratively_independent_build_platform_count, 0);
   assert.ok(platformAttestations.attestations.every((entry) => entry.independence_scope === "BUILD_EXECUTOR_INFRASTRUCTURE_ONLY"));
+  assert.ok(platformAttestations.attestations.every((entry) => entry.administratively_independent === false));
+  assert.ok(platformAttestations.attestations.every((entry) => entry.executor_infrastructure_independent === true));
   assert.ok(platformAttestations.attestations.every((entry) => entry.independent_protocol_authority === false));
+});
+
+test("administrative-domain copies cannot substitute for build-executor reproduction", () => {
+  const first = simulateBaseline(profile);
+  const second = simulateBaseline(profile);
+  const faults = runFaultCampaigns(first.events, first.initialRoot, first.candidateRoot);
+  const gates = evaluateScaleGates({
+    profile,
+    first,
+    second,
+    faults,
+    buildPlatformAttestations: [
+      { artifact_root: first.candidateRoot, administratively_independent: true, executor_infrastructure_independent: false, independence_scope: "INDEPENDENT_ADMINISTRATIVE_DOMAIN", platform_control_domain: "copy-a" },
+      { artifact_root: first.candidateRoot, administratively_independent: true, executor_infrastructure_independent: false, independence_scope: "INDEPENDENT_ADMINISTRATIVE_DOMAIN", platform_control_domain: "copy-b" }
+    ]
+  });
+  assert.equal(gates[5].status, "PENDING_EXTERNAL_REPRODUCTION");
 });

@@ -26,7 +26,7 @@
 - `[SIM] S4` fault recovery and candidate/incremental/full replay equality.
 - `[EXP] S5` multi-provider/region/architecture evidence plus reproduction by two independent build platforms.
 
-`[A]` S5 remains fail-closed until two administratively independent build platforms reproduce the same artifact root. GitHub runner variants under one provider do not satisfy that condition.
+`[A]` S5 remains fail-closed until two distinct build-executor infrastructures reproduce the same artifact root. GitHub Actions and Cloudflare Git Build satisfy only `BUILD_EXECUTOR_INFRASTRUCTURE_ONLY`; both disclose the same project operator, set `administratively_independent=false`, and confer no protocol authority, observer seat, or finality weight.
 
 `[EXP]` The Cloudflare Git build runs `npm run cloudflare:build` and publishes only the generated `dist` evidence through an unbound `workers.dev` resource. It has no secret, storage, queue, database, custom-domain, or `ahin.io` route binding and carries no protocol authority.
 

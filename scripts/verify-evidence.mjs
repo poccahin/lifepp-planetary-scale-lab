@@ -12,11 +12,14 @@ if (domainHash("lifepp:planetary-scale-evidence-certificate:v1", certificatePayl
 if (certificate.s0_through_s4_complete !== true) throw new Error("S0_S4_INCOMPLETE");
 if (certificate.s5_independent_reproduction_complete !== platforms.s5_reproduction_gate_satisfied) throw new Error("S5_ATTESTATION_DIVERGENCE");
 if (certificate.planetary_scale_envelope_proved !== certificate.s5_independent_reproduction_complete) throw new Error("SCALE_ENVELOPE_GATE_DIVERGENCE");
+if (platforms.administratively_independent_build_platform_count !== 0) throw new Error("BUILD_PLATFORM_ADMINISTRATIVE_INDEPENDENCE_OVERCLAIM");
+if (!platforms.attestations.every((entry) => entry.administratively_independent === false && entry.executor_infrastructure_independent === true)) throw new Error("BUILD_EXECUTOR_SCOPE_MISMATCH");
 if (certificate.planetary_live_scale_proved !== false) throw new Error("LIVE_SCALE_OVERCLAIM");
 if (certificate.protocol_finality_proved !== false || certificate.transaction_submission !== false || certificate.asset_execution_enabled !== false) throw new Error("AUTHORITY_BOUNDARY_VIOLATION");
 if (certificate.asset_recovery_executor !== "DISARMED") throw new Error("RECOVERY_EXECUTOR_MUST_REMAIN_DISARMED");
 const { verification_root: recordedVerificationRoot, ...reproductionPayload } = reproduction;
 if (domainHash("lifepp:build-platform-reproduction-verification:v1", reproductionPayload) !== recordedVerificationRoot) throw new Error("PLATFORM_REPRODUCTION_ROOT_MISMATCH");
 if (reproduction.certificate_root !== recordedCertificateRoot || reproduction.s5_independent_reproduction_complete !== true) throw new Error("PLATFORM_REPRODUCTION_CERTIFICATE_DIVERGENCE");
+if (reproduction.independence_scope !== "BUILD_EXECUTOR_INFRASTRUCTURE_ONLY" || reproduction.common_project_operator_disclosed !== true) throw new Error("PLATFORM_REPRODUCTION_SCOPE_OVERCLAIM");
 if (reproduction.independent_protocol_authority !== false || reproduction.planetary_live_scale_proved !== false) throw new Error("PLATFORM_REPRODUCTION_OVERCLAIM");
 console.log(JSON.stringify({ evidence_verified: true, run_root: recordedRunRoot, certificate_root: recordedCertificateRoot }));

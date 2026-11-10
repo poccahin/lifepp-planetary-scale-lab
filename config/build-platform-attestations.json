@@ -7,7 +7,8 @@
       "claim_label": "[EXP]",
       "platform": "GITHUB_ACTIONS",
       "platform_control_domain": "github.com",
-      "administratively_independent": true,
+      "administratively_independent": false,
+      "executor_infrastructure_independent": true,
       "independence_scope": "BUILD_EXECUTOR_INFRASTRUCTURE_ONLY",
       "common_project_operator_disclosed": true,
       "common_project_operator": "poccahin-current-operator",
@@ -22,7 +23,8 @@
       "claim_label": "[EXP]",
       "platform": "CLOUDFLARE_GIT_BUILD",
       "platform_control_domain": "cloudflare.com",
-      "administratively_independent": true,
+      "administratively_independent": false,
+      "executor_infrastructure_independent": true,
       "independence_scope": "BUILD_EXECUTOR_INFRASTRUCTURE_ONLY",
       "common_project_operator_disclosed": true,
       "common_project_operator": "poccahin-current-operator",
@@ -40,6 +42,7 @@
   "required_independent_build_platform_count": 2,
   "s5_reproduction_gate_satisfied": true,
   "independence_scope": "BUILD_EXECUTOR_INFRASTRUCTURE_ONLY",
+  "administratively_independent_build_platform_count": 0,
   "common_project_operator_disclosed": true,
   "protocol_authority_implied": false
 }
